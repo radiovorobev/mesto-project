@@ -7,6 +7,11 @@
   background-image: url('../../../images/add-button.svg');
   background-repeat: no-repeat;
   background-position: center center;
+  transition: opacity 0.2s linear;
+}
+
+.profile__add-button:hover {
+  opacity: 0.6;
 }
 
 @media screen and (max-width: 917px) {
