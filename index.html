@@ -21,54 +21,12 @@
       <button aria-label="Добавить место" type="button" class="profile__add-button"></button>
     </section>
     <section class="elements page__elements">
-      <article class="element">
-        <img class="element__image" src="./images/elements/element-karachaevo.jpg" alt="Карачаево-Черкесия">
-        <div class="element__caption">
-          <h2 class="element__title">Карачаево-Черкесия</h2>
-          <button type="button" class="element__like-button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/elements/element-sevastopol.jpg" alt="Севастополь">
-        <div class="element__caption">
-          <h2 class="element__title">Севастополь</h2>
-          <button type="button" class="element__like-button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/elements/element-dombay.jpg" alt="Домбай">
-        <div class="element__caption">
-          <h2 class="element__title">Домбай</h2>
-          <button type="button" class="element__like-button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/elements/element-baltiysk.jpg" alt="Балтийск">
-        <div class="element__caption">
-          <h2 class="element__title">Балтийск</h2>
-          <button type="button" class="element__like-button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/elements/element-sulakskiy-canyon.jpg" alt="Сулакский каньон">
-        <div class="element__caption">
-          <h2 class="element__title">Сулакский каньон</h2>
-          <button type="button" class="element__like-button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/elements/element-baikal.jpg" alt="Байкал">
-        <div class="element__caption">
-          <h2 class="element__title">Байкал</h2>
-          <button type="button" class="element__like-button"></button>
-        </div>
-      </article>
     </section>
   </main>
   <footer class="footer page__footer">
     <p class="footer__copyright">&copy; 2021 Mesto Russia</p>
   </footer>
-  <div class="popup">
+  <div class="popup" id="popup_edit-profile">
     <div class="popup__container">
       <button class="popup__close-button" type="button"></button>
       <form class="form" name="edit-profile">
@@ -79,5 +37,34 @@
       </form>
     </div>
   </div>
+  <div class="popup" id="popup_add-card">
+    <div class="popup__container">
+      <button class="popup__close-button" type="button"></button>
+      <form class="form" name="add-card">
+        <h2 class="form__heading">Новое место</h2>
+        <input class="form__input" name="location-name" type="text" placeholder="Название">
+        <input class="form__input" name="location-image" type="text" placeholder="Ссылка на картинку">
+        <button class="form__submit" type="submit">Создать</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup_card" id="popup_card">
+      <figure class="popup__container_card">
+        <button class="popup__close-button" type="button"></button>
+        <img class="popup__image" src="" alt="">
+        <figcaption class="popup__image-caption"></figcaption>
+      </figure>
+  </div>
+  <template id="element-template">
+    <article class="element">
+      <img class="element__image" src="" alt="">
+      <div class="element__caption">
+        <h2 class="element__title"></h2>
+        <button type="button" class="element__like-button"></button>
+      </div>
+      <button type="button" class="element__delete-button"></button>
+    </article>
+  </template>
+  <script src="./pages/index.js"></script>
 </body>
 </html>
