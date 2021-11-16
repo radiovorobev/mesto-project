@@ -1,4 +1,3 @@
-
 const popupCard = document.querySelector('#popup_card');
 
 // edit profile constants
