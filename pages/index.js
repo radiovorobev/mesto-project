@@ -26,6 +26,11 @@ function closePopup (popupName) {
 	popupName.classList.remove('popup_opened');
 }
 
+// close popupCard handler
+popupCard.querySelector('.popup__close-button').addEventListener('click', function () {
+	closePopup(popupCard);
+});
+
 // open popup function
 function openPopup (popupName) {
 	popupName.classList.add('popup_opened');
@@ -83,9 +88,6 @@ function createCard(title, link) {
 		popupCard.querySelector('.popup__image').src = link;
 		popupCard.querySelector('.popup__image').alt = title;
 		popupCard.querySelector('.popup__image-caption').textContent = title;
-		popupCard.querySelector('.popup__close-button').addEventListener('click', function () {
-			closePopup(popupCard);
-		});
 		openPopup(popupCard);
 	});
 
