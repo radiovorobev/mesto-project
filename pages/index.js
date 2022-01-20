@@ -1,3 +1,4 @@
+const popup = document.querySelectorAll('.popup');
 const popupCard = document.querySelector('#popup_card');
 
 // edit profile constants
@@ -98,7 +99,7 @@ function addCard (container, cardElement) {
 	container.prepend(cardElement);
 }
 
-// adding card form form
+// adding card form
 newCardForm.addEventListener(('submit'), function (evt) {
 	evt.preventDefault();
 
@@ -107,6 +108,20 @@ newCardForm.addEventListener(('submit'), function (evt) {
 	closePopup(newCardPopup);
 	}
 );
+
+// close popup @overlay & Esc
+Array.from(popup).forEach ((overlay) => {
+	overlay.addEventListener('click', function (evt) {
+		if (evt.target.classList.contains('popup')) {
+			closePopup(overlay);
+		};
+	});
+	window.addEventListener('keydown', function (evt) {
+		if (evt.key === 'Escape') {
+			closePopup(overlay);
+		};
+	});
+});
 
 // adding cards onload
 const initialCards = [
