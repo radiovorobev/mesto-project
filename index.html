@@ -12,7 +12,9 @@
   </header>
   <main>
     <section class="profile page__profile">
-      <img class="profile__avatar" src="./images/avatar.jpg" alt="Жак Ив Кусто">
+      <a href="#" class="profile__avatar-link">
+        <img class="profile__avatar" src="./images/avatar.jpg" alt="Жак Ив Кусто">
+      </a>
       <div class="profile__info">
         <h1 class="profile__username">Жак-Ив Кусто</h1>
         <button aria-label="Редактировать профиль" type="button" class="profile__edit-button"></button>
@@ -26,6 +28,16 @@
   <footer class="footer page__footer">
     <p class="footer__copyright">&copy; 2021 Mesto Russia</p>
   </footer>
+  <div class="popup" id="popup_edit-avatar">
+    <div class="popup__container">
+      <button class="popup__close-button" type="button"></button>
+      <form class="form" name="edit-avatar">
+        <h2 class="form__heading">Обновить аватар</h2>
+        <input class="form__input" name="avatar-link" type="text" placeholder="Ссылка на изображение">
+        <button class="form__submit" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
   <div class="popup" id="popup_edit-profile">
     <div class="popup__container">
       <button class="popup__close-button" type="button"></button>

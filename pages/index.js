@@ -1,6 +1,13 @@
 const popup = document.querySelectorAll('.popup');
 const popupCard = document.querySelector('#popup_card');
 
+//edit avatar constants
+const avatarPopup = document.querySelector('#popup_edit-avatar');
+const avatarOpenButton = document.querySelector('.profile__avatar-link');
+const avatarCloseButton = avatarPopup.querySelector('.popup__close-button');
+const avatarLink = document.querySelector("div.popup input[name='avatar-link']");
+const avatarForm = avatarPopup.querySelector('.form');
+
 // edit profile constants
 const profilePopup = document.querySelector('#popup_edit-profile');
 const profileOpenButton = document.querySelector('.profile__edit-button');
@@ -37,6 +44,28 @@ function openPopup (popupName) {
 	popupName.classList.add('popup_opened');
 }
 
+// editing avatar popup
+
+avatarOpenButton.addEventListener(('click'), function() {
+	openPopup(avatarPopup);
+});
+
+avatarCloseButton.addEventListener(('click'), function() {
+	closePopup(avatarPopup);
+});
+
+function changeAvatar(link) {
+	const avatarImage = document.querySelector('.profile__avatar');
+	avatarImage.src = link;
+}
+
+avatarForm.addEventListener(('submit'), function (evt) {
+		evt.preventDefault();
+		changeAvatar(avatarLink.value);
+		avatarForm.reset();
+		closePopup(avatarPopup);
+	}
+);
 // editing profile popup
 profileOpenButton.addEventListener(('click'), function() {
 	openPopup(profilePopup);
