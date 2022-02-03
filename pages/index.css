@@ -45,3 +45,4 @@
 @import url(../blocks/form/__heading/form__heading.css);
 @import url(../blocks/form/__input/form__input.css);
 @import url(../blocks/form/__submit/form__submit.css);
+@import url(../blocks/form/__submit/_inactive/form__submit_inactive.css);

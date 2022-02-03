@@ -34,6 +34,25 @@ function closePopup (popupName) {
 	popupName.classList.remove('popup_opened');
 }
 
+//close popup @Overlay
+
+function closeOverlay (popup) {
+	popup.addEventListener('click', function (evt) {
+		if (evt.target.classList.contains('popup')) {
+			closePopup(popup);
+		};
+	});
+}
+
+// close popup @Esc
+function closeEscButton (popup) {
+	window.addEventListener('keydown', function (evt) {
+		if (evt.key === 'Escape') {
+			closePopup(popup);
+		};
+	});
+}
+
 // close popupCard handler
 popupCard.querySelector('.popup__close-button').addEventListener('click', function () {
 	closePopup(popupCard);
@@ -48,6 +67,8 @@ function openPopup (popupName) {
 
 avatarOpenButton.addEventListener(('click'), function() {
 	openPopup(avatarPopup);
+	closeOverlay(avatarPopup);
+	closeEscButton(avatarPopup)
 });
 
 avatarCloseButton.addEventListener(('click'), function() {
@@ -69,6 +90,8 @@ avatarForm.addEventListener(('submit'), function (evt) {
 // editing profile popup
 profileOpenButton.addEventListener(('click'), function() {
 	openPopup(profilePopup);
+	closeOverlay(profilePopup);
+	closeEscButton(profilePopup)
 });
 
 profileCloseButton.addEventListener(('click'), function() {
@@ -94,6 +117,8 @@ profileForm.addEventListener(('submit'), function (event) {
 
 newCardOpenButton.addEventListener(('click'), function () {
 	openPopup(newCardPopup);
+	closeOverlay(newCardPopup);
+	closeEscButton(newCardPopup)
 });
 
 // creating card function
@@ -119,6 +144,8 @@ function createCard(title, link) {
 		popupCard.querySelector('.popup__image').alt = title;
 		popupCard.querySelector('.popup__image-caption').textContent = title;
 		openPopup(popupCard);
+		closeOverlay(popupCard);
+		closeEscButton(popupCard);
 	});
 
 	return element;
@@ -137,20 +164,6 @@ newCardForm.addEventListener(('submit'), function (evt) {
 	closePopup(newCardPopup);
 	}
 );
-
-// close popup @overlay & Esc
-Array.from(popup).forEach ((overlay) => {
-	overlay.addEventListener('click', function (evt) {
-		if (evt.target.classList.contains('popup')) {
-			closePopup(overlay);
-		};
-	});
-	window.addEventListener('keydown', function (evt) {
-		if (evt.key === 'Escape') {
-			closePopup(overlay);
-		};
-	});
-});
 
 // adding cards onload
 const initialCards = [
