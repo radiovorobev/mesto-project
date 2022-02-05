@@ -1,4 +1,4 @@
-import { popupCard } from './data.js';
+import {popupCard, elementTemplate, cardImage, cardCaption} from './data.js';
 import { openPopup } from './modal.js';
 
 function addCard (container, cardElement) {
@@ -6,7 +6,6 @@ function addCard (container, cardElement) {
 }
 
 function createCard(title, link) {
-	const elementTemplate = document.querySelector('#element-template').content;
 	const element = elementTemplate.querySelector('.element').cloneNode(true);
 	const elementImage = element.querySelector('.element__image');
 
@@ -23,9 +22,9 @@ function createCard(title, link) {
 	});
 
 	element.querySelector('.element__image').addEventListener('click', function () {
-		popupCard.querySelector('.popup__image').src = link;
-		popupCard.querySelector('.popup__image').alt = title;
-		popupCard.querySelector('.popup__image-caption').textContent = title;
+		cardImage.src = link;
+		cardImage.alt = title;
+		cardCaption.textContent = title;
 		openPopup(popupCard);
 	});
 

@@ -28,6 +28,9 @@ export const locationImage = document.querySelector("div.popup input[name='locat
 
 //creating cards constants
 export const cardsContainer = document.querySelector('.elements');
+export const elementTemplate = document.querySelector('#element-template').content;
+export const cardImage = popupCard.querySelector('.popup__image');
+export const cardCaption = popupCard.querySelector('.popup__image-caption');
 
 //validation classes setup
 
