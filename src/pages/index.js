@@ -1,4 +1,4 @@
-import { enableValidation } from '../components/validate.js';
+import { enableValidation, toggleButtonState } from '../components/validate.js';
 import { addCard, createCard, initialCards } from '../components/card.js';
 import { openPopup, closePopup } from '../components/modal.js';
 import {
@@ -49,10 +49,13 @@ function changeAvatar(link) {
 }
 
 avatarForm.addEventListener(('submit'), function (evt) {
-		evt.preventDefault();
-		changeAvatar(avatarLink.value);
-		avatarForm.reset();
-		closePopup(avatarPopup);
+	const inputList = Array.from(avatarForm.querySelectorAll(validationSetup.inputSelector));
+	const submit = avatarForm.querySelector(validationSetup.submitButtonSelector);
+	evt.preventDefault();
+	changeAvatar(avatarLink.value);
+	avatarForm.reset();
+	toggleButtonState(inputList, submit, validationSetup);
+	closePopup(avatarPopup);
 	}
 );
 
@@ -89,9 +92,11 @@ newCardOpenButton.addEventListener(('click'), function () {
 // adding card form
 newCardForm.addEventListener(('submit'), function (evt) {
 	evt.preventDefault();
-
+	const inputList = Array.from(newCardForm.querySelectorAll(validationSetup.inputSelector));
+	const submit = newCardForm.querySelector(validationSetup.submitButtonSelector);
 	addCard(cardsContainer, createCard(locationName.value, locationImage.value));
 	newCardForm.reset();
+	toggleButtonState(inputList, submit, validationSetup);
 	closePopup(newCardPopup);
 	}
 );

@@ -58,4 +58,4 @@ const enableValidation = (setup) => {
 	});
 };
 
-export { enableValidation };
+export { enableValidation, toggleButtonState };
