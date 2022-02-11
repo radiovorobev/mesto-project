@@ -38,6 +38,15 @@
     </form>
   </div>
 </div>
+<div class="popup" id="popup_delete-card">
+  <div class="popup__container">
+    <button class="popup__close-button" type="button"></button>
+    <form class="form" name="delete-card">
+      <h2 class="form__heading">Вы уверены?</h2>
+      <button class="form__submit" type="submit">Да</button>
+    </form>
+  </div>
+</div>
 <div class="popup" id="popup_edit-profile">
   <div class="popup__container">
     <button class="popup__close-button" type="button"></button>
@@ -79,9 +88,11 @@
     <img alt="" class="element__image" src="">
     <div class="element__caption">
       <h2 class="element__title"></h2>
-      <button class="element__like-button" type="button"></button>
+      <div class="element__likes">
+        <button class="element__like-button" type="button"></button>
+        <span class="element__likes-count"></span>
+      </div>
     </div>
-    <button class="element__delete-button" type="button"></button>
   </article>
 </template>
 </body>

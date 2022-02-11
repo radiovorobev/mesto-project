@@ -1,6 +1,7 @@
 import { enableValidation, toggleButtonState } from '../components/validate.js';
-import { addCard, createCard, initialCards } from '../components/card.js';
+import { addCard, createCard } from '../components/card.js';
 import { openPopup, closePopup } from '../components/modal.js';
+import { getProfile, editProfile, getCards, uploadCard, editAvatar } from '../components/api.js';
 import {
 	popupCard,
 	avatarPopup,
@@ -16,6 +17,7 @@ import {
 	profileUserStatusValue,
 	userName,
 	userStatus,
+	userAvatar,
 	newCardPopup,
 	newCardForm,
 	newCardOpenButton,
@@ -23,15 +25,23 @@ import {
 	locationImage,
 	locationName,
 	cardsContainer,
-	validationSetup
+	validationSetup,
+	deleteCardPopup,
+	deleteCardCloseButton, avatar
 } from '../components/data.js';
 
 import './index.css';
 
+export let profileId = '';
 
 // close popupCard handler
 popupCard.querySelector('.popup__close-button').addEventListener('click', function () {
 	closePopup(popupCard);
+});
+
+// delete card popup
+deleteCardCloseButton.addEventListener(('click'), function() {
+	closePopup(deleteCardPopup);
 });
 
 // editing avatar popup
@@ -43,19 +53,24 @@ avatarCloseButton.addEventListener(('click'), function() {
 	closePopup(avatarPopup);
 });
 
-function changeAvatar(link) {
-	const avatarImage = document.querySelector('.profile__avatar');
-	avatarImage.src = link;
-}
-
 avatarForm.addEventListener(('submit'), function (evt) {
 	const inputList = Array.from(avatarForm.querySelectorAll(validationSetup.inputSelector));
 	const submit = avatarForm.querySelector(validationSetup.submitButtonSelector);
 	evt.preventDefault();
-	changeAvatar(avatarLink.value);
-	avatarForm.reset();
-	toggleButtonState(inputList, submit, validationSetup);
-	closePopup(avatarPopup);
+	submit.textContent = 'Coхранение...';
+	editAvatar(avatarLink.value)
+		.then(() => {
+			avatar.src = avatarLink.value;
+			closePopup(avatarPopup);
+			avatarForm.reset();
+			toggleButtonState(inputList, submit, validationSetup);
+		})
+		.catch((err) => {
+			console.log(err);
+		})
+		.finally(() => {
+			submit.textContent = "Сохранить";
+		})
 	}
 );
 
@@ -68,21 +83,27 @@ profileCloseButton.addEventListener(('click'), function() {
 	closePopup(profilePopup);
 });
 
-// editing profile from form
-function editProfile (name, status) {
-	userName.textContent = name.value;
-	userStatus.textContent = status.value;
-}
-
 // editing profile form handler
 newCardCloseButton.addEventListener(('click'), function() {
 	closePopup(newCardPopup);
 });
 
 profileForm.addEventListener(('submit'), function (event) {
+	const submit = profileForm.querySelector(validationSetup.submitButtonSelector);
 	event.preventDefault();
-	editProfile(profileUserNameValue, profileUserStatusValue);
-	closePopup(profilePopup);
+	submit.textContent = 'Coхранение...';
+	editProfile(profileUserNameValue.value, profileUserStatusValue.value)
+		.then(() => {
+		userName.textContent = profileUserNameValue.value;
+		userStatus.textContent = profileUserStatusValue.value;
+		closePopup(profilePopup);
+	})
+		.catch((err) => {
+			console.log(err);
+		})
+		.finally(() => {
+			submit.textContent = "Сохранить";
+		})
 });
 
 newCardOpenButton.addEventListener(('click'), function () {
@@ -91,18 +112,41 @@ newCardOpenButton.addEventListener(('click'), function () {
 
 // adding card form
 newCardForm.addEventListener(('submit'), function (evt) {
-	evt.preventDefault();
 	const inputList = Array.from(newCardForm.querySelectorAll(validationSetup.inputSelector));
 	const submit = newCardForm.querySelector(validationSetup.submitButtonSelector);
-	addCard(cardsContainer, createCard(locationName.value, locationImage.value));
-	newCardForm.reset();
-	toggleButtonState(inputList, submit, validationSetup);
-	closePopup(newCardPopup);
+	evt.preventDefault();
+	submit.textContent = 'Coхранение...';
+	uploadCard(locationName.value, locationImage.value)
+		.then((card) => {
+			addCard(cardsContainer, createCard(card.name, card.link, card.likes, card._id, card.owner._id));
+			closePopup(newCardPopup);
+			newCardForm.reset();
+			toggleButtonState(inputList, submit, validationSetup);
+		})
+		.catch((err) => {
+			console.log(err);
+		})
+		.finally(() => {
+			submit.textContent = "Сохранить";
+		})
 	}
 );
 
-// adding cards onload
-initialCards.forEach(card => addCard(cardsContainer, createCard(card.name, card.link)));
-
 enableValidation(validationSetup);
 
+Promise.all([getProfile(), getCards()])
+	.then(([profile, cards]) => {
+		userName.textContent = profile.name;
+		userStatus.textContent = profile.about;
+		userAvatar.src = profile.avatar;
+		profileUserNameValue.value = profile.name;
+		profileUserStatusValue.value = profile.about;
+		profileId = profile._id;
+
+		cards.forEach((card) => {
+			addCard(cardsContainer, createCard(card.name, card.link, card.likes, card._id, card.owner._id));
+		});
+	})
+	.catch((err) => {
+		console.log(err);
+	})

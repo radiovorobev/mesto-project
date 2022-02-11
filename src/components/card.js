@@ -1,24 +1,68 @@
-import {popupCard, elementTemplate, cardImage, cardCaption} from './data.js';
-import { openPopup } from './modal.js';
+import { popupCard, elementTemplate, cardImage, cardCaption, deleteCardPopup } from './data.js';
+import { closePopup, openPopup } from './modal.js';
+import { profileId } from '../pages/index.js';
+import { deleteCardFromServer, addLikeToServer, removeLikeFromServer } from "./api.js";
+
+let deleteElement;
+let deleteId;
 
 function addCard (container, cardElement) {
 	container.prepend(cardElement);
 }
 
-function createCard(title, link) {
+function likeCard(element, button, cardId) {
+	if(button.classList.contains('element__like-button_active')) {
+		removeLikeFromServer(cardId)
+			.then((res) => {
+				element.textContent = res.likes.length;
+				button.classList.remove('element__like-button_active');
+			})
+			.catch((err) => {
+				console.log(err);
+			})
+	} else {
+		addLikeToServer(cardId)
+			.then((res) => {
+				element.textContent = res.likes.length;
+				button.classList.add('element__like-button_active');
+			})
+			.catch((err) => {
+				console.log(err);
+			})
+	}
+
+}
+
+export function addDeleteButton() {
+	const deleteButton = document.createElement('button');
+	deleteButton.classList.add('element__delete-button');
+	deleteButton.setAttribute('type','button');
+	return deleteButton;
+}
+
+function createCard(title, link, likes, cardId, ownerId) {
 	const element = elementTemplate.querySelector('.element').cloneNode(true);
 	const elementImage = element.querySelector('.element__image');
+	const elementLikes = element.querySelector('.element__likes-count');
+	const likeButton = element.querySelector('.element__like-button');
 
 	element.querySelector('.element__title').textContent = title;
 	elementImage.src = link;
 	elementImage.alt = title;
+	elementLikes.textContent = likes.length;
 
-	element.querySelector('.element__like-button').addEventListener('click', function (evt) {
-		evt.target.classList.toggle('element__like-button_active');
-	});
+	if (ownerId === profileId) {
+		addCard(element, addDeleteButton());
+	}
 
-	element.querySelector('.element__delete-button').addEventListener('click', function (evt) {
-		evt.target.parentElement.remove();
+	likes.forEach((likedElement) => {
+		if(likedElement._id === profileId) {
+			likeButton.classList.add('element__like-button_active');
+		}
+	})
+
+	element.querySelector('.element__like-button').addEventListener('click', (evt) => {
+		likeCard(elementLikes, evt.target, cardId);
 	});
 
 	element.querySelector('.element__image').addEventListener('click', function () {
@@ -28,34 +72,29 @@ function createCard(title, link) {
 		openPopup(popupCard);
 	});
 
+	const deleteButton = element.querySelector('.element__delete-button');
+	if (deleteButton) {
+		deleteButton.addEventListener('click', (evt) => {
+			deleteElement = evt.target.closest('.element');
+			deleteId = cardId;
+			openPopup(deleteCardPopup);
+		});
+	}
+
 	return element;
 }
 
-const initialCards = [
-	{
-		name: 'Архыз',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-	},
-	{
-		name: 'Челябинская область',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-	},
-	{
-		name: 'Иваново',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-	},
-	{
-		name: 'Камчатка',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-	},
-	{
-		name: 'Холмогорский район',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-	},
-	{
-		name: 'Байкал',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-	}
-];
+function deleteCard() {
+	deleteCardFromServer(deleteId)
+		.then(() => {
+			deleteElement.remove();
+			closePopup(deleteCardPopup);
+		})
+		.catch((err) => {
+			console.log(err);
+		})
+}
 
-export { popupCard, addCard, createCard, initialCards };
+deleteCardPopup.addEventListener("click", deleteCard);
+
+export { popupCard, addCard, createCard, deleteCard };
