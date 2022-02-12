@@ -86,6 +86,6 @@ function deleteCard() {
 		})
 }
 
-deleteCardPopup.addEventListener("click", deleteCard);
+deleteCardPopup.addEventListener('submit', deleteCard);
 
 export { popupCard, addCard, createCard, deleteCard };

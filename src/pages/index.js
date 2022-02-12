@@ -27,7 +27,13 @@ import {
 	cardsContainer,
 	validationSetup,
 	deleteCardPopup,
-	deleteCardCloseButton, avatar
+	deleteCardCloseButton,
+	avatar,
+	avatarSubmit,
+	avatarInputList,
+	profileSubmit,
+	newCardFormSubmit,
+	newCardFormInputList
 } from '../components/data.js';
 
 import './index.css';
@@ -54,22 +60,20 @@ avatarCloseButton.addEventListener(('click'), function() {
 });
 
 avatarForm.addEventListener(('submit'), function (evt) {
-	const inputList = Array.from(avatarForm.querySelectorAll(validationSetup.inputSelector));
-	const submit = avatarForm.querySelector(validationSetup.submitButtonSelector);
 	evt.preventDefault();
-	submit.textContent = 'Coхранение...';
+	avatarSubmit.textContent = 'Coхранение...';
 	editAvatar(avatarLink.value)
 		.then(() => {
 			avatar.src = avatarLink.value;
 			closePopup(avatarPopup);
 			avatarForm.reset();
-			toggleButtonState(inputList, submit, validationSetup);
+			toggleButtonState(avatarInputList, avatarSubmit, validationSetup);
 		})
 		.catch((err) => {
 			console.log(err);
 		})
 		.finally(() => {
-			submit.textContent = "Сохранить";
+			avatarSubmit.textContent = "Сохранить";
 		})
 	}
 );
@@ -89,9 +93,8 @@ newCardCloseButton.addEventListener(('click'), function() {
 });
 
 profileForm.addEventListener(('submit'), function (event) {
-	const submit = profileForm.querySelector(validationSetup.submitButtonSelector);
 	event.preventDefault();
-	submit.textContent = 'Coхранение...';
+	profileSubmit.textContent = 'Coхранение...';
 	editProfile(profileUserNameValue.value, profileUserStatusValue.value)
 		.then(() => {
 		userName.textContent = profileUserNameValue.value;
@@ -102,7 +105,7 @@ profileForm.addEventListener(('submit'), function (event) {
 			console.log(err);
 		})
 		.finally(() => {
-			submit.textContent = "Сохранить";
+			profileSubmit.textContent = "Сохранить";
 		})
 });
 
@@ -112,22 +115,20 @@ newCardOpenButton.addEventListener(('click'), function () {
 
 // adding card form
 newCardForm.addEventListener(('submit'), function (evt) {
-	const inputList = Array.from(newCardForm.querySelectorAll(validationSetup.inputSelector));
-	const submit = newCardForm.querySelector(validationSetup.submitButtonSelector);
 	evt.preventDefault();
-	submit.textContent = 'Coхранение...';
+	newCardFormSubmit.textContent = 'Coхранение...';
 	uploadCard(locationName.value, locationImage.value)
 		.then((card) => {
 			addCard(cardsContainer, createCard(card.name, card.link, card.likes, card._id, card.owner._id));
 			closePopup(newCardPopup);
 			newCardForm.reset();
-			toggleButtonState(inputList, submit, validationSetup);
+			toggleButtonState(newCardFormInputList, newCardFormSubmit, validationSetup);
 		})
 		.catch((err) => {
 			console.log(err);
 		})
 		.finally(() => {
-			submit.textContent = "Сохранить";
+			newCardFormSubmit.textContent = "Сохранить";
 		})
 	}
 );
