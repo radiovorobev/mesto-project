@@ -33,13 +33,6 @@ function likeCard(element, button, cardId) {
 
 }
 
-export function addDeleteButton() {
-	const deleteButton = document.createElement('button');
-	deleteButton.classList.add('element__delete-button');
-	deleteButton.setAttribute('type','button');
-	return deleteButton;
-}
-
 function createCard(title, link, likes, cardId, ownerId) {
 	const element = elementTemplate.querySelector('.element').cloneNode(true);
 	const elementImage = element.querySelector('.element__image');
@@ -51,9 +44,9 @@ function createCard(title, link, likes, cardId, ownerId) {
 	elementImage.alt = title;
 	elementLikes.textContent = likes.length;
 
-	if (ownerId === profileId) {
-		addCard(element, addDeleteButton());
-	}
+		const deleteButton = element.querySelector('.element__delete-button');
+		const isOwner = ownerId === profileId;
+		deleteButton.classList.add(isOwner ? 'element__delete-button_visible' : 'element__delete-button_hidden');
 
 	likes.forEach((likedElement) => {
 		if(likedElement._id === profileId) {
@@ -72,7 +65,6 @@ function createCard(title, link, likes, cardId, ownerId) {
 		openPopup(popupCard);
 	});
 
-	const deleteButton = element.querySelector('.element__delete-button');
 	if (deleteButton) {
 		deleteButton.addEventListener('click', (evt) => {
 			deleteElement = evt.target.closest('.element');
@@ -80,7 +72,6 @@ function createCard(title, link, likes, cardId, ownerId) {
 			openPopup(deleteCardPopup);
 		});
 	}
-
 	return element;
 }
 
